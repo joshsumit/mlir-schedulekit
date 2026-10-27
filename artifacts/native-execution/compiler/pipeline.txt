@@ -1,0 +1,18 @@
+Input verification:
+  /local/mnt/workspace/MLIR_build_artifacts/llvm_triton/build/bin/mlir-opt <workload> --verify-each
+Tensor function-boundary bufferization:
+  builtin.module(one-shot-bufferize{bufferize-function-boundaries function-boundary-type-conversion=identity-layout-map})
+Loop and LLVM dialect lowering:
+  --convert-linalg-to-loops
+  --convert-scf-to-cf
+  --convert-func-to-llvm='use-bare-ptr-memref-call-conv=1'
+  --convert-to-llvm
+  --reconcile-unrealized-casts
+LLVM IR generation:
+  /local/mnt/workspace/MLIR_build_artifacts/llvm_triton/build/bin/mlir-translate --mlir-to-llvmir
+Native object generation:
+  /local/mnt/workspace/MLIR_build_artifacts/llvm_triton/build/bin/llc -filetype=obj -mtriple=x86_64-unknown-linux-gnu -O0
+Runner compilation:
+  /usr/bin/clang++ -std=c++17 -O0 -g -Wall -Wextra -Werror
+Runner link:
+  /usr/bin/clang++ <runner-object> <kernel-object> -o <runner>

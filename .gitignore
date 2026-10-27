@@ -1,0 +1,12 @@
+build/
+cmake-build-*/
+
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+/artifacts/native-execution/native/native_runner
